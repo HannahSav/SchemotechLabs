@@ -23,8 +23,8 @@
 module main_tb;
     reg CLK_test;
     reg [15:0] SW_test;
-    wire [23:0] res_test;
-    wire [23:0] res2_test;
+    wire [15:0] res_test;
+    wire [15:0] res2_test;
     main mod(
         .CLK100MHZ(CLK_test),
         .SW(SW_test),
@@ -32,24 +32,23 @@ module main_tb;
         .res2(res2_test)
     );
     reg[7:0] i, j;
-    reg[23:0] s;
+    reg[15:0] s;
     initial begin
-        i = 57; //57, 133
-        j = 57;
+        i = 255; //255 254, 255 255
+        j = 237;// 246+ not 247
         CLK_test = 1;
-        SW_test[7:0] = i;
-        SW_test[15:8] = j;
-        #120;
-        s = i * j;
-        //#15;
-        if(res2_test[23:0] == s[23:0])
-            begin
-            $display("Correct\n");  
+        for(i = 2 ;j <= 255; i = i+1) begin
+            for(j = 251;j<=255; j = j+1 )begin 
+                SW_test[7:0] = i;
+                //#100
+                SW_test[15:8] = j;
+                s = i * j;
+                #120;
+                if(res2_test[15:0] != s[15:0])begin
+                    $display("Uncorrect res=%d, s=%d, i=%d, j=%d", res2_test[23:0], s[23:0], i, j);
+                end
             end
-        else
-            begin
-            $display("Uncorrect res=%d, s=%d ", res2_test[23:0], s[23:0]);
-            end
+        end
     end
     always begin
         #1;

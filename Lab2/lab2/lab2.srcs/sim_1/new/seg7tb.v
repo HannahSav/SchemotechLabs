@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 23.04.2022 14:58:30
+// Create Date: 27.04.2022 01:03:24
 // Design Name: 
-// Module Name: adder
+// Module Name: seg7tb
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,14 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module adder( 
-  input clk,
-  input wire [7:0] a,
-  input wire [7:0] b,
-  output reg [15:0] result
-);
-always @(posedge clk) begin
-    result <= a + b;
-end
-endmodule
+module seg7tb(
 
+    );
+endmodule
