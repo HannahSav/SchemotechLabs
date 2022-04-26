@@ -1,0 +1,17 @@
+Version 4
+SymbolType BLOCK
+LINE Normal 0 -31 0 -48
+LINE Normal -32 0 -49 0
+LINE Normal 32 0 64 0
+RECTANGLE Normal 32 32 -32 -32
+CIRCLE Normal 44 4 32 -6
+TEXT -7 -20 Left 2 1
+PIN -48 0 RIGHT 8
+PINATTR PinName IN
+PINATTR SpiceOrder 1
+PIN 64 0 LEFT 8
+PINATTR PinName OUT
+PINATTR SpiceOrder 2
+PIN 0 -48 BOTTOM 8
+PINATTR PinName VDD
+PINATTR SpiceOrder 3

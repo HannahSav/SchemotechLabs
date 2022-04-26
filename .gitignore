@@ -3,3 +3,6 @@
 !*/
 !.gitignore
 !README.md
+!*.docx
+!*.asc
+!*.asy
