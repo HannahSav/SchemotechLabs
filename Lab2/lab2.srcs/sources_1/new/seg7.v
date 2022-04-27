@@ -38,8 +38,8 @@ module seg7(
     output reg CG,
     output reg [7:0] AN//numbers of displays
     );
-wire [15:0] summ;
-wire[15:0] mult	 ;
+wire [23:0] res;
+//wire[15:0] mult;
 
 wire [2:0] s; //part of clkdiv to make delay
 reg [3:0] digit; //display num
@@ -51,25 +51,25 @@ reg [19:0] clkdiv = 0; //pointer to make delay
 main m(CLK100MHZ, SW, summ, mult);
 
 assign s = clkdiv[19:17];
-assign LED[15:0] = mult[15:0];
+assign LED[15:0] = res[15:0];
 assign LED16_B = BTND;
 assign LED17_B = BTNR;
 
 always @(posedge CLK100MHZ)
 	case(s)
-	   0:digit = mult[3:0]; 
-	   1:digit = mult[7:4]; 
-	   2:digit = mult[11:8]; 
-	   3:digit = mult[15:12]; 
-	   4:digit = 4'b0000; 
-       5:digit = 4'b0000; 
+	   0:digit = res[3:0]; 
+	   1:digit = res[7:4]; 
+	   2:digit = res[11:8]; 
+	   3:digit = res[15:12]; 
+	   4:digit = res[19:16]; 
+       5:digit = res[23:20]; 
        6:digit = 4'b0000;
        7:digit = 4'b0000; 
-	   default:digit = mult[3:0];
+	   default:digit = res[3:0];
 	endcase
 always @(*)
     case(digit)
-        0:{CA, CB, CC, CD, CE, CF, CG} = 7'b0000000;				
+        0:{CA, CB, CC, CD, CE, CF, CG} = 7'b0000001;				
         1:{CA, CB, CC, CD, CE, CF, CG} = 7'b1001111;
         2:{CA, CB, CC, CD, CE, CF, CG} = 7'b0010010;
         3:{CA, CB, CC, CD, CE, CF, CG} = 7'b0000110;

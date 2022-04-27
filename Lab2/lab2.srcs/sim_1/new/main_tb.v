@@ -23,32 +23,30 @@
 module main_tb;
     reg CLK_test;
     reg [15:0] SW_test;
-    wire [15:0] res_test;
-    wire [15:0] res2_test;
+    //reg [15:0] mult;
+   // reg [15:0] a2;
+   // reg [23:0] cube;
+    wire [23:0] res_test;
+    wire [1:0] state;
     main mod(
-        .CLK100MHZ(CLK_test),
-        .SW(SW_test),
+        .clk(CLK_test),
+        .x(SW_test),
+      //  .result_mult(mult),
+       // .a2(a2),
+       // .result_cube(cube),
         .res(res_test),
-        .res2(res2_test)
+        .state_o(state)
     );
     reg[7:0] i, j;
-    reg[15:0] s;
+    reg[23:0] s;
     initial begin
-        i = 255; //255 254, 255 255
-        j = 237;// 246+ not 247
+        i = 15; //253, 80,   53 80, 53 42
+        j = 17;// ok but only if answer is lower then 001000
         CLK_test = 1;
-        for(i = 2 ;j <= 255; i = i+1) begin
-            for(j = 251;j<=255; j = j+1 )begin 
-                SW_test[7:0] = i;
-                //#100
-                SW_test[15:8] = j;
-                s = i * j;
-                #120;
-                if(res2_test[15:0] != s[15:0])begin
-                    $display("Uncorrect res=%d, s=%d, i=%d, j=%d", res2_test[23:0], s[23:0], i, j);
-                end
-            end
-        end
+        SW_test[7:0] = i;
+        SW_test[15:8] = j;
+        #150;
+        s = i*j + i*i*i;
     end
     always begin
         #1;

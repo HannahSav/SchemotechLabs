@@ -25,11 +25,11 @@ module multipl(
     input rst_i,
     
     input [7:0] a_bi,
-    input [7:0] b_bi,
+    input [15:0] b_bi,
     input start_i,
     
     output busy_o,
-    output reg [15:0] y_bo
+    output reg [23:0] y_bo
 );
 
     localparam IDLE = 1'b0;
@@ -38,15 +38,16 @@ module multipl(
     reg [3:0] ctr; //perenos
     wire [3:0] end_step; //number length
     wire [7:0] part_sum;
-    wire [15:0] shifted_part_sum;
-    reg [7:0] a, b;
-    reg [15:0] part_res;
+    wire [23:0] shifted_part_sum;
+    reg [7:0] a;
+    reg [15:0] b;
+    reg [23:0] part_res;
     reg state = IDLE;
     
     assign part_sum = a & {8{b[ctr]}};
     assign shifted_part_sum = part_sum << ctr;
     assign end_step = (ctr == 4'b1000); 
-    assign busy_o = state;
+    assign busy_o = state; ///BUSY ?? ???????? ????????????....
     
     always @(posedge clk_i)
         if (rst_i) begin
@@ -68,7 +69,7 @@ module multipl(
                     begin
                         if (end_step) begin
                             state <= IDLE;
-                            y_bo <= part_res ;
+                            y_bo <= part_res;
                         end
                         part_res <= part_res + shifted_part_sum;
                         ctr <= ctr + 1 ;

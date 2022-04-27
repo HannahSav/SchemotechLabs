@@ -22,9 +22,9 @@
 
 module adder( 
   input clk,
-  input wire [7:0] a,
-  input wire [7:0] b,
-  output reg [15:0] result
+  input wire [15:0] a,
+  input wire [23:0] b,
+  output reg [23:0] result
 );
 always @(posedge clk) begin
     result <= a + b;
