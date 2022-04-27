@@ -23,6 +23,12 @@
 module seg7(
     input wire[15:0] SW,
     input CLK100MHZ,
+    input BTND,
+    input BTNR,
+    
+    output wire[15:0] LED,
+    output LED16_B,
+    output LED17_B,
     output reg CA, //display's segments
     output reg CB,
     output reg CC,
@@ -30,21 +36,24 @@ module seg7(
     output reg CE,
     output reg CF,
     output reg CG,
-    output reg [7:0] AN, //numbers of displays
-    output wire [15:0] summ,
-    output wire[15:0] mult
-	 );
-	 
+    output reg [7:0] AN//numbers of displays
+    );
+wire [15:0] summ;
+wire[15:0] mult	 ;
+
 wire [2:0] s; //part of clkdiv to make delay
 reg [3:0] digit; //display num
-reg [7:0] clkdiv = 0; //pointer to make delay
+reg [19:0] clkdiv = 0; //pointer to make delay
  
 // our result number <-nenorm output
 //wire[23:0] x = 24'b000100010010001000011000; <- norm output
 
 main m(CLK100MHZ, SW, summ, mult);
 
-assign s = clkdiv[7:5];
+assign s = clkdiv[19:17];
+assign LED[15:0] = mult[15:0];
+assign LED16_B = BTND;
+assign LED17_B = BTNR;
 
 always @(posedge CLK100MHZ)
 	case(s)
@@ -60,7 +69,7 @@ always @(posedge CLK100MHZ)
 	endcase
 always @(*)
     case(digit)
-        0:{CA, CB, CC, CD, CE, CF, CG} = 7'b0000001;				
+        0:{CA, CB, CC, CD, CE, CF, CG} = 7'b0000000;				
         1:{CA, CB, CC, CD, CE, CF, CG} = 7'b1001111;
         2:{CA, CB, CC, CD, CE, CF, CG} = 7'b0010010;
         3:{CA, CB, CC, CD, CE, CF, CG} = 7'b0000110;
@@ -81,6 +90,7 @@ always @(*)
 
 always @(*)begin
     AN=8'b11111111;
+    #1;
     AN[s] = 0;
 end
 
