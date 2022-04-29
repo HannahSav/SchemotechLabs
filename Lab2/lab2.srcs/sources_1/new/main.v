@@ -37,26 +37,30 @@ module main(
     localparam WORK1 = 2'b01;
     localparam WORK2 = 2'b10;
     localparam WORK3 = 2'b11;
+   
+    wire start;
+    reg start_r = 1;
+    assign start = start_r;
     
     wire rst;
-    reg rst_reg = 0;
+    reg rst_reg = 1;
     assign rst = rst_reg;
     
     wire rst_m;
-    reg rst_m_reg = 1;
+    reg rst_m_reg = 0;
     assign rst_m = rst_m_reg;
     
-    wire start_i; 
-    reg start_r = 0;
-    assign start_i = start_r;
+    wire start_m; 
+    reg start_m_r = 0;
+    assign start_m = start_m_r;
     
     reg [1:0] state = IDLE;
     assign state_o = state;
     
     wire busy;
     wire[7:0] a;
-    reg [7:0] a_reg;
-    assign a = a_reg;
+    reg [7:0] a_r;
+    assign a = a_r;
     
     wire[15:0] b;
     reg[15:0] b_r;
@@ -64,7 +68,7 @@ module main(
     
     reg [15:0] a2;
     wire [23:0] result_func;
-    reg [15:0] result_mult; //not right
+    reg [23:0] result_mult; //not right
     reg [23:0] result_cube; // not right
     
     
@@ -74,48 +78,58 @@ module main(
            result_cube <= 0;
            result_mult <= 0;
            state <= IDLE;
-           start_r <= 1;
+           //start_r <= 1; //delete than
+           rst_reg <= 0; //delete than
+           rst_m_reg <= 1;
+           //start_m_r <= 0; //
         end else begin
             case (state)
                 IDLE:
-                  //  if (!busy) 
+                  if (start) 
                   begin
                         state <= WORK1;
-                        b_r <= x[7:0];
-                        a_reg <= x[7:0];
-                        start_r <= 1;
-                        rst_m_reg = 0;
-                    end
+                        b_r <= x[15:8];
+                        a_r <= x[7:0];
+                        rst_m_reg <= 0;
+                        start_m_r <= 1;
+                   end
                 WORK1:
                     begin
-                       if(!busy) begin
+                       if(!busy && !start_m) begin
                             result_mult <= result_func;
                             state <= WORK2;
-                            b_r <= x[15:8];
-                            rst_m_reg = 0;
-                       end //else
-                       //    start_r <= 0;
+                            b_r <= x[7:0];
+                            rst_m_reg <= 0;
+                            start_m_r <= 1;
+                       end else if(busy) begin
+                            start_m_r <= 0;
+                       end
                     end
                 WORK2:
                     begin
-                       if(!busy && start_i) begin
+                       if(!busy && !start_m) begin
                             a2 <= result_func;
                             state <= WORK3;
                             b_r <= a2;
-                            rst_m_reg = 0;
+                            rst_m_reg <= 0;
+                            start_m_r <= 1;
+                       end else if(busy) begin
+                            start_m_r <= 0;
                        end
                     end
                 WORK3:
-                    begin
-                       if(!busy && start_i) begin
+                    begin///DOesn't right count cube!!! Mb because of big numbers...
+                       if(!busy && !start_m) begin
                             result_cube <= result_func;
-                            start_r = 0; 
+                            start_m_r <= 0; 
                             state <= IDLE;
+                       end else if(busy) begin
+                            start_m_r <= 0;
                        end
                     end
             endcase
         end
         
     adder add(clk, result_mult, result_cube, res);
-    multipl ml(clk, rst_m, a, b, start_i, busy, result_func); 
+    multipl ml(clk, rst_m, a, b, start_m, busy, result_func); 
 endmodule
