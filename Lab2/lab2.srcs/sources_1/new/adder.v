@@ -22,7 +22,7 @@
 
 module adder( 
   input clk,
-  input wire [15:0] a,
+  input wire [23:0] a,
   input wire [23:0] b,
   output reg [23:0] result
 );

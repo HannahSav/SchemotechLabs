@@ -52,7 +52,7 @@ wire rst;
 // our result number <-nenorm output
 //wire[23:0] x = 24'b000100010010001000011000; <- norm output
 
-main m(CLK100MHZ, SW, start, rst, summ, mult);
+//main m(CLK100MHZ, SW, start, rst, summ, mult);
 
 assign s = clkdiv[19:17];
 assign LED[15:0] = res[15:0];

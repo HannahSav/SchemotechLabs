@@ -26,6 +26,9 @@ module main(
         input wire start_in,
         input wire rst_in,
         
+        output [6:0] SEG,
+        output [7:0] AN,
+
         output wire [23:0] res,
      
         output wire[1:0] state_o
@@ -65,14 +68,16 @@ module main(
     
     reg [15:0] a2;
     wire [23:0] result_func;
-    reg [23:0] result_mult; //not right
-    reg [23:0] result_cube; // not right
+    reg [23:0] result_mult;
+    reg [23:0] result_cube;
     
     initial begin
         rst_r <= rst_in;
         start_r <= start_in;
-        //rst_m_r <= 1;
     end
+    
+    reg [19:0] clkdiv = 0;
+    seg7_1 s7 (res, clk, clkdiv, SEG, AN);
     
     always @(posedge clk)
         if (rst) begin
@@ -80,10 +85,8 @@ module main(
            result_cube <= 0;
            result_mult <= 0;
            state <= IDLE;
-           //start_r <= 1; //delete than
-           rst_r <= 0; //delete than
+           //rst_r <= 0; //delete than
            rst_m_r <= 1;
-           //start_m_r <= 0; //
         end else begin
             case (state)
                 IDLE:
@@ -120,7 +123,7 @@ module main(
                        end
                     end
                 WORK3:
-                    begin///DOesn't right count cube!!! Mb because of big numbers...
+                    begin
                        if(!busy && !start_m) begin
                             result_cube <= result_func;
                             start_m_r <= 0; 
@@ -132,6 +135,10 @@ module main(
                     end
             endcase
         end
+        
+    always @(posedge clk) begin
+        clkdiv <= clkdiv+1;
+    end
         
     adder add(clk, result_mult, result_cube, res);
     multipl ml(clk, rst_m, a, b, start_m, busy, result_func); 

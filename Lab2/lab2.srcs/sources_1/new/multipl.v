@@ -35,7 +35,7 @@ module multipl(
     localparam IDLE = 1'b0;
     localparam WORK = 1'b1;
 
-    reg [3:0] ctr; //perenos
+    reg [4:0] ctr; //perenos
     wire [3:0] end_step; //number length
     wire [7:0] part_sum;
     wire [23:0] shifted_part_sum;
@@ -44,9 +44,9 @@ module multipl(
     reg [23:0] part_res;
     reg state = IDLE;
     
-    assign part_sum = a & {8{b[ctr]}};
+    assign part_sum = a & {16{b[ctr]}};
     assign shifted_part_sum = part_sum << ctr;
-    assign end_step = (ctr == 4'b1000); 
+    assign end_step = (ctr == 5'b10000); 
     assign busy_o = state; ///BUSY ?? ???????? ????????????....
     
     always @(posedge clk_i)
@@ -77,4 +77,3 @@ module multipl(
             endcase
         end
 endmodule
-

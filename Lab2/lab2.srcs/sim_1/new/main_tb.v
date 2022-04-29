@@ -26,6 +26,9 @@ module main_tb;
     reg start = 1;
     reg rst = 0;
     
+    wire [6:0] SEG;
+    wire [7:0] AN;
+    
     wire [23:0] res_test;
     wire [1:0] state;
     main mod(
@@ -33,6 +36,8 @@ module main_tb;
         .x(SW_test),
         .start_in(start),
         .rst_in(rst),
+        .SEG(SEG),
+        .AN(AN),
         .res(res_test),
         .state_o(state)
     );
