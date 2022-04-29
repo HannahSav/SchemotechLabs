@@ -23,16 +23,16 @@
 module main_tb;
     reg CLK_test;
     reg [15:0] SW_test;
-    //reg start = 1;
-    //reg rst = 1;
+    reg start = 1;
+    reg rst = 0;
     
     wire [23:0] res_test;
     wire [1:0] state;
     main mod(
         .clk(CLK_test),
         .x(SW_test),
-      //  .start(start),
-      //  .rst(rst),
+        .start_in(start),
+        .rst_in(rst),
         .res(res_test),
         .state_o(state)
     );

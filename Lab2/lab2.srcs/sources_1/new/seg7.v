@@ -44,16 +44,22 @@ wire [23:0] res;
 wire [2:0] s; //part of clkdiv to make delay
 reg [3:0] digit; //display num
 reg [19:0] clkdiv = 0; //pointer to make delay
- 
+
+wire start; 
+wire rst;
+
+
 // our result number <-nenorm output
 //wire[23:0] x = 24'b000100010010001000011000; <- norm output
 
-main m(CLK100MHZ, SW, summ, mult);
+main m(CLK100MHZ, SW, start, rst, summ, mult);
 
 assign s = clkdiv[19:17];
 assign LED[15:0] = res[15:0];
-assign LED16_B = BTND;
-assign LED17_B = BTNR;
+assign LED17_B = BTND;
+assign rst = BTNR;
+assign start = BTND;
+assign LED16_B = BTNR;
 
 always @(posedge CLK100MHZ)
 	case(s)

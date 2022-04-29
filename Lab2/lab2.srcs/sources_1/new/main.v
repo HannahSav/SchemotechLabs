@@ -23,8 +23,8 @@
 module main(
         input clk,
         input wire [15:0] x,
-        //input wire start,
-        //input wire rst,
+        input wire start_in,
+        input wire rst_in,
         
         output wire [23:0] res,
      
@@ -36,11 +36,11 @@ module main(
     localparam WORK3 = 2'b11;
    
     wire start;
-    reg start_r = 1;
+    reg start_r;
     assign start = start_r;
     
     wire rst;
-    reg rst_r = 1;
+    reg rst_r;
     assign rst = rst_r;
     
     wire rst_m;
@@ -68,6 +68,11 @@ module main(
     reg [23:0] result_mult; //not right
     reg [23:0] result_cube; // not right
     
+    initial begin
+        rst_r <= rst_in;
+        start_r <= start_in;
+        rst_m_r <= 1;
+    end
     
     always @(posedge clk)
         if (rst) begin
