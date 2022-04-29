@@ -71,7 +71,7 @@ module main(
     initial begin
         rst_r <= rst_in;
         start_r <= start_in;
-        rst_m_r <= 1;
+        //rst_m_r <= 1;
     end
     
     always @(posedge clk)
@@ -112,7 +112,7 @@ module main(
                        if(!busy && !start_m) begin
                             a2 <= result_func;
                             state <= WORK3;
-                            b_r <= a2;
+                            b_r <= result_func;
                             rst_m_r <= 0;
                             start_m_r <= 1;
                        end else if(busy) begin

@@ -42,8 +42,8 @@ module main_tb;
     reg[15:0] a22;
     reg[23:0] cube2;
     initial begin
-        i = 2; //253, 80,   53 80, 53 42
-        j = 5;// ok but only if answer is lower then 001000
+        i = 255; //253, 80,   53 80, 53 42
+        j = 153;// ok but only if answer is lower then 001000
         CLK_test = 1;
         SW_test[7:0] = i;
         SW_test[15:8] = j;
