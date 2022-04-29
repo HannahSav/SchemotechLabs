@@ -24,13 +24,10 @@ module main(
         input clk,
         input wire [15:0] x,
         //input wire start,
-        //input wire r,
+        //input wire rst,
         
         output wire [23:0] res,
-        //output reg [15:0] result_mult,
-        //output reg [15:0] a2,
-        //output reg [23:0] result_cube,
-        
+     
         output wire[1:0] state_o
     );
     localparam IDLE = 2'b00;
@@ -43,12 +40,12 @@ module main(
     assign start = start_r;
     
     wire rst;
-    reg rst_reg = 1;
-    assign rst = rst_reg;
+    reg rst_r = 1;
+    assign rst = rst_r;
     
     wire rst_m;
-    reg rst_m_reg = 0;
-    assign rst_m = rst_m_reg;
+    reg rst_m_r = 0;
+    assign rst_m = rst_m_r;
     
     wire start_m; 
     reg start_m_r = 0;
@@ -79,8 +76,8 @@ module main(
            result_mult <= 0;
            state <= IDLE;
            //start_r <= 1; //delete than
-           rst_reg <= 0; //delete than
-           rst_m_reg <= 1;
+           rst_r <= 0; //delete than
+           rst_m_r <= 1;
            //start_m_r <= 0; //
         end else begin
             case (state)
@@ -90,8 +87,8 @@ module main(
                         state <= WORK1;
                         b_r <= x[15:8];
                         a_r <= x[7:0];
-                        rst_m_reg <= 0;
-                        start_m_r <= 1;
+                        rst_m_r <= 0;
+                        start_m_r <= start;
                    end
                 WORK1:
                     begin
@@ -99,7 +96,7 @@ module main(
                             result_mult <= result_func;
                             state <= WORK2;
                             b_r <= x[7:0];
-                            rst_m_reg <= 0;
+                            rst_m_r <= 0;
                             start_m_r <= 1;
                        end else if(busy) begin
                             start_m_r <= 0;
@@ -111,7 +108,7 @@ module main(
                             a2 <= result_func;
                             state <= WORK3;
                             b_r <= a2;
-                            rst_m_reg <= 0;
+                            rst_m_r <= 0;
                             start_m_r <= 1;
                        end else if(busy) begin
                             start_m_r <= 0;
@@ -123,6 +120,7 @@ module main(
                             result_cube <= result_func;
                             start_m_r <= 0; 
                             state <= IDLE;
+                            start_r <= 0;
                        end else if(busy) begin
                             start_m_r <= 0;
                        end
