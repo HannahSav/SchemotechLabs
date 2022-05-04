@@ -21,6 +21,8 @@
 
 
 module seg7(
+
+///TODO: NEED TO ADD STATES FROM MAIN...
     input wire[15:0] SW,
     input CLK100MHZ,
     input BTND,
@@ -39,7 +41,6 @@ module seg7(
     output reg [7:0] AN//numbers of displays
     );
 wire [23:0] res;
-//wire[15:0] mult;
 
 wire [2:0] s; //part of clkdiv to make delay
 reg [3:0] digit; //display num
@@ -47,15 +48,15 @@ reg [19:0] clkdiv = 0; //pointer to make delay
 
 wire start; 
 wire rst;
+reg rst_send;
+reg start_send;
 
+wire state;
 
-// our result number <-nenorm output
-//wire[23:0] x = 24'b000100010010001000011000; <- norm output
-
-//main m(CLK100MHZ, SW, start, rst, summ, mult);
+main m(CLK100MHZ, SW, start_send, rst_send, res, state);
 
 assign s = clkdiv[19:17];
-assign LED[15:0] = res[15:0];
+assign LED[15:0] = SW[15:0];
 assign LED17_B = BTND;
 assign rst = BTNR;
 assign start = BTND;
@@ -102,6 +103,10 @@ end
 
 always @(posedge CLK100MHZ) begin
     clkdiv <= clkdiv+1;
+    if((start || rst) && state == 2'b00)begin
+        start_send <= start;
+        rst_send <= rst;
+    end
 end
 
 endmodule

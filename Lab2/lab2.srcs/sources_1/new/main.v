@@ -22,16 +22,12 @@
 
 module main(
         input clk,
-        input wire [15:0] x,
+        input wire [15:0] SW,
         input wire start_in,
         input wire rst_in,
-        
-        output [6:0] SEG,
-        output [7:0] AN,
-
+       
         output wire [23:0] res,
-     
-        output wire[1:0] state_o
+        output reg[1:0] state
     );
     localparam IDLE = 2'b00;
     localparam WORK1 = 2'b01;
@@ -54,8 +50,8 @@ module main(
     reg start_m_r = 0;
     assign start_m = start_m_r;
     
-    reg [1:0] state = IDLE;
-    assign state_o = state;
+    //reg [1:0] state = IDLE;
+    //assign state_o = state;
     
     wire busy;
     wire[7:0] a;
@@ -72,12 +68,13 @@ module main(
     reg [23:0] result_cube;
     
     initial begin
-        rst_r <= rst_in;
-        start_r <= start_in;
+        //rst_r <= rst_in;
+        rst_r <= 0;
+        start_r <= 1;
+        //start_r <= start_in;
     end
     
     reg [19:0] clkdiv = 0;
-    seg7_1 s7 (res, clk, clkdiv, SEG, AN);
     
     always @(posedge clk)
         if (rst) begin
@@ -93,8 +90,8 @@ module main(
                   if (start) 
                   begin
                         state <= WORK1;
-                        b_r <= x[15:8];
-                        a_r <= x[7:0];
+                        b_r <= SW[15:8];
+                        a_r <= SW[7:0];
                         rst_m_r <= 0;
                         start_m_r <= start;
                    end
@@ -103,7 +100,7 @@ module main(
                        if(!busy && !start_m) begin
                             result_mult <= result_func;
                             state <= WORK2;
-                            b_r <= x[7:0];
+                            b_r <= SW[7:0];
                             rst_m_r <= 0;
                             start_m_r <= 1;
                        end else if(busy) begin

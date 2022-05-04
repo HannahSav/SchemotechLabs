@@ -24,8 +24,14 @@ module seg7_1(
     input [23:0] x_i,
     input clk,
     input [19:0] clkdiv,
-    output reg [6:0] seg,
-    output reg [7:0] an
+    output CA, //display's segments
+    output CB,
+    output CC,
+    output CD,
+    output CE,
+    output CF,
+    output CG,
+    output [7:0] an
     //output wire dp 
 	 );
  
@@ -52,24 +58,24 @@ always @(posedge clk)
 	default:digit = x[3:0];
 	endcase
 always @(*)
-    case(digit)
-    0:seg = 7'b1000000;			
-    1:seg = 7'b1111001;
-    2:seg = 7'b0100100;
-    3:seg = 7'b0110000;
-    4:seg = 7'b0011001;
-    5:seg = 7'b0010010; 
-    6:seg = 7'b0000010;
-    7:seg = 7'b1111000;
-    8:seg = 7'b0000000;
-    9:seg = 7'b0010000;
-    'hA:seg = 7'b0001000; 
-    'hB:seg = 7'b0000011; 
-    'hC:seg = 7'b1000110;
-    'hD:seg = 7'b0100001;
-    'hE:seg = 7'b0000110;
-    'hF:seg = 7'b0001110;
-    default: seg = 7'b0000000;
+   case(digit)
+        0:{CA, CB, CC, CD, CE, CF, CG} = 7'b0000001;				
+        1:{CA, CB, CC, CD, CE, CF, CG} = 7'b1001111;
+        2:{CA, CB, CC, CD, CE, CF, CG} = 7'b0010010;
+        3:{CA, CB, CC, CD, CE, CF, CG} = 7'b0000110;
+        4:{CA, CB, CC, CD, CE, CF, CG} = 7'b1001100;
+        5:{CA, CB, CC, CD, CE, CF, CG} = 7'b0100100; 
+        6:{CA, CB, CC, CD, CE, CF, CG} = 7'b0100000;
+        7:{CA, CB, CC, CD, CE, CF, CG} = 7'b0001111;
+        8:{CA, CB, CC, CD, CE, CF, CG} = 7'b0000000;
+        9:{CA, CB, CC, CD, CE, CF, CG} = 7'b0000100;
+        'hA:{CA, CB, CC, CD, CE, CF, CG} = 7'b0001000; 
+        'hB:{CA, CB, CC, CD, CE, CF, CG} = 7'b1100000; 
+        'hC:{CA, CB, CC, CD, CE, CF, CG} = 7'b0110001;
+        'hD:{CA, CB, CC, CD, CE, CF, CG} = 7'b1000010;
+        'hE:{CA, CB, CC, CD, CE, CF, CG} = 7'b0110000;
+        'hF:{CA, CB, CC, CD, CE, CF, CG} = 7'b0111000;
+        default: {CA, CB, CC, CD, CE, CF, CG} = 7'b0000000;
     endcase
 
 always @(*)begin

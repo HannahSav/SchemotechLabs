@@ -23,20 +23,27 @@
 module main_tb;
     reg CLK_test;
     reg [15:0] SW_test;
-    reg start = 1;
-    reg rst = 0;
+   // reg start = 1;
+   // reg rst = 0;
     
-    wire [6:0] SEG;
+    wire CA;
+    wire CB;
+    wire CC;
+    wire CD;
+    wire CE;
+    wire CF;
+    wire CG;
+    
     wire [7:0] AN;
     
     wire [23:0] res_test;
     wire [1:0] state;
     main mod(
         .clk(CLK_test),
-        .x(SW_test),
-        .start_in(start),
-        .rst_in(rst),
-        .SEG(SEG),
+        .SW(SW_test),
+    //    .start_in(start),
+    //    .rst_in(rst),
+        //.SEG(SEG),
         .AN(AN),
         .res(res_test),
         .state_o(state)
