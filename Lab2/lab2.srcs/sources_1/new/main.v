@@ -27,7 +27,7 @@ module main(
         input wire rst_in,
        
         output wire [23:0] res,
-        output reg[1:0] state
+        output [1:0] state_o
     );
     localparam IDLE = 2'b00;
     localparam WORK1 = 2'b01;
@@ -36,11 +36,11 @@ module main(
    
     wire start;
     reg start_r;
-    assign start = start_r;
+    assign start = start_r;//rst_in
     
     wire rst;
     reg rst_r;
-    assign rst = rst_r;
+    assign rst = rst_r;//rst_r
     
     wire rst_m;
     reg rst_m_r = 0;
@@ -50,8 +50,8 @@ module main(
     reg start_m_r = 0;
     assign start_m = start_m_r;
     
-    //reg [1:0] state = IDLE;
-    //assign state_o = state;
+    reg [1:0] state = IDLE;
+    assign state_o = state;
     
     wire busy;
     wire[7:0] a;
@@ -62,27 +62,28 @@ module main(
     reg[15:0] b_r;
     assign b = b_r;
     
-    reg [15:0] a2;
+    //reg [15:0] a2;
     wire [23:0] result_func;
     reg [23:0] result_mult;
     reg [23:0] result_cube;
     
-    initial begin
-        //rst_r <= rst_in;
-        rst_r <= 0;
-        start_r <= 1;
-        //start_r <= start_in;
-    end
+    
+   /* initial begin
+        #1;
+        rst_r <= rst_in;
+        //rst_r <= 0;
+        //start_r <= 1;
+        start_r <= start_in;
+    end*/
     
     reg [19:0] clkdiv = 0;
     
     always @(posedge clk)
         if (rst) begin
-           a2 <= 0;
            result_cube <= 0;
            result_mult <= 0;
            state <= IDLE;
-           //rst_r <= 0; //delete than
+           rst_r <= 0; //delete than
            rst_m_r <= 1;
         end else begin
             case (state)
@@ -110,7 +111,7 @@ module main(
                 WORK2:
                     begin
                        if(!busy && !start_m) begin
-                            a2 <= result_func;
+                           // a2 <= result_func;
                             state <= WORK3;
                             b_r <= result_func;
                             rst_m_r <= 0;
@@ -137,6 +138,11 @@ module main(
         clkdiv <= clkdiv+1;
     end
         
+    always @(*)begin
+        rst_r <= rst_in;
+        start_r <= start_in;
+    end   
+     
     adder add(clk, result_mult, result_cube, res);
     multipl ml(clk, rst_m, a, b, start_m, busy, result_func); 
 endmodule

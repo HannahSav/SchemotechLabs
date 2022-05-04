@@ -53,7 +53,7 @@ reg start_send;
 
 wire state;
 
-main m(CLK100MHZ, SW, start_send, rst_send, res, state);
+//main m(CLK100MHZ, SW, start_send, rst_send, res, state);
 
 assign s = clkdiv[19:17];
 assign LED[15:0] = SW[15:0];

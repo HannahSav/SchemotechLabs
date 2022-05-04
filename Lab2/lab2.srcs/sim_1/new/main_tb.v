@@ -23,28 +23,15 @@
 module main_tb;
     reg CLK_test;
     reg [15:0] SW_test;
-   // reg start = 1;
-   // reg rst = 0;
-    
-    wire CA;
-    wire CB;
-    wire CC;
-    wire CD;
-    wire CE;
-    wire CF;
-    wire CG;
-    
-    wire [7:0] AN;
-    
+    reg start;
+    reg rst;
     wire [23:0] res_test;
     wire [1:0] state;
     main mod(
         .clk(CLK_test),
         .SW(SW_test),
-    //    .start_in(start),
-    //    .rst_in(rst),
-        //.SEG(SEG),
-        .AN(AN),
+        .start_in(start),
+        .rst_in(rst),
         .res(res_test),
         .state_o(state)
     );
@@ -54,12 +41,34 @@ module main_tb;
     reg[15:0] a22;
     reg[23:0] cube2;
     initial begin
-        i = 255; //253, 80,   53 80, 53 42
-        j = 153;// ok but only if answer is lower then 001000
         CLK_test = 1;
+        
+        start = 0;
+        rst = 1;
+        
+        #120;
+        i = 255; 
+        j = 153;
         SW_test[7:0] = i;
         SW_test[15:8] = j;
-        #150;
+        #5;
+        start = 1;
+        rst = 0;
+        
+        #200;
+        start = 0;
+        rst = 1;
+        
+        #200;
+        i = 2; 
+        j = 1;
+        SW_test[7:0] = i;
+        SW_test[15:8] = j;
+        #5;
+        start = 1;
+        rst = 0;
+        #120;
+        
         s = i*j + i*i*i;
         mult2 = i*j;
         a22 = i*i;

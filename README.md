@@ -10,6 +10,7 @@
 -ОДИН РАЗ СРАБАТЫВАЕТ НА ЗАДАННЫХ ЗНАЧЕНИЯХ!!!!!\
 
 ***need:***\
+-rst = 1, start = 1???????
 -start && rst sending with BTND BTNR\
 -test on nexys\
 -отчет\
