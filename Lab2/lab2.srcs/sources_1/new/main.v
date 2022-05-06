@@ -77,21 +77,18 @@ module main(
     end*/
     
     reg [19:0] clkdiv = 0;
-    initial begin
-        rst_r = 0;
-        start_r = 0;
-    end
     always @(posedge clk)
-        if (rst_in) begin
+        if (rst_r && rst_in) begin
            result_cube <= 0;
            result_mult <= 0;
            state <= IDLE;//
            //rst_in <= 0; //delete than
+           rst_r <= 0;
            rst_m_r <= 1;
         end else begin
             case (state)
                 IDLE:
-                  if (start_in)  
+                  if (start_in && start_r)  
                   begin
                         state <= WORK1;
                         b_r <= SW[15:8];
@@ -107,6 +104,7 @@ module main(
                             b_r <= SW[7:0];
                             rst_m_r <= 0;
                             start_m_r <= 1;
+                            start_r <= 0;
                        end else if(busy) begin
                             start_m_r <= 0;
                        end
@@ -119,6 +117,7 @@ module main(
                             b_r <= result_func;
                             rst_m_r <= 0;
                             start_m_r <= 1;
+                            start_r <= 0;
                        end else if(busy) begin
                             start_m_r <= 0;
                        end
@@ -141,9 +140,11 @@ module main(
         clkdiv <= clkdiv+1;
     end
         
-    always @(*)begin
-        rst_r <= rst_in;
-        start_r <= start_in;
+    always @(start_in)begin
+        start_r <= 1;
+    end   
+    always @(rst_in)begin
+        rst_r <= 1;
     end   
      
     adder add(clk, result_mult, result_cube, res);

@@ -105,10 +105,7 @@ end
 
 always @(posedge CLK100MHZ) begin
     clkdiv <= clkdiv+1;
-    if((start || rst) && state == 2'b00)begin
-        start_send <= 0;
-        rst_send <= 0;
-        #10;
+    if(state == 2'b00)begin
         start_send <= start;
         rst_send <= rst;
     end
