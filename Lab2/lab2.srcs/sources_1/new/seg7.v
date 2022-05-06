@@ -53,7 +53,9 @@ reg start_send;
 
 wire state;
 
-//main m(CLK100MHZ, SW, start_send, rst_send, res, state);
+main m(CLK100MHZ, SW, start_send, rst_send, res, state);
+
+
 
 assign s = clkdiv[19:17];
 assign LED[15:0] = SW[15:0];
@@ -104,6 +106,9 @@ end
 always @(posedge CLK100MHZ) begin
     clkdiv <= clkdiv+1;
     if((start || rst) && state == 2'b00)begin
+        start_send <= 0;
+        rst_send <= 0;
+        #10;
         start_send <= start;
         rst_send <= rst;
     end

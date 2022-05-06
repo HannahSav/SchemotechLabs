@@ -21,8 +21,15 @@
 
 
 module seg7_tb;
-    wire[15:0] SW = 16'b1111111000000001;
+    reg[15:0] SW;
     reg clk = 0;
+    
+    reg BTND;
+    reg BTNR;
+    wire[15:0] LED;
+    wire LED16_B;
+    wire LED17_B;
+    
     wire CA; //display's segments
     wire CB;
     wire CC;
@@ -30,12 +37,15 @@ module seg7_tb;
     wire CE;
     wire CF;
     wire CG;
-    wire [7:0] AN ;//numbers of displays
-    wire [15:0] summ;
-    wire [15:0] mult;
+    wire [7:0] AN ;//numbers of display
     seg7 mod(
     SW,
-    clk, 
+    clk,
+    BTND,
+    BTNR,
+    LED,
+    LED16_B,
+    LED17_B, 
     CA,
     CB,
     CC,
@@ -43,15 +53,26 @@ module seg7_tb;
     CE,
     CF,
     CG,
-    AN,
-    summ,
-    mult
+    AN
     );
-    integer i;
+    //integer i;
     initial begin
-        for (i = 0; i < 10000; i = i+1) begin 
+        clk = 1;
+        SW = 16'b1111111000000001;
+        BTND = 0;
+        BTNR = 0;
+        #10
+        BTND = 1;
+        BTNR = 0;
+        #10;
+        BTND = 0;
+        /*for (i = 0; i < 10000; i = i+1) begin 
             clk = clk + 1; 
             #1; 
-        end 
+        end */
+    end
+    always begin
+        #1;
+        clk = ~clk;
     end
 endmodule

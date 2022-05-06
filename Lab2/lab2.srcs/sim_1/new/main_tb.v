@@ -56,8 +56,8 @@ module main_tb;
         rst = 0;
         
         #200;
-        start = 0;
-        rst = 1;
+        //start = 0;
+        //rst = 1;
         
         #200;
         i = 2; 
@@ -66,7 +66,7 @@ module main_tb;
         SW_test[15:8] = j;
         #5;
         start = 1;
-        rst = 0;
+        rst = 1;
         #120;
         
         s = i*j + i*i*i;
