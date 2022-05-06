@@ -8,9 +8,9 @@
 -make something with rst, start & busy\
 -test on nyxes 4 ddr\
 -ОДИН РАЗ СРАБАТЫВАЕТ НА ЗАДАННЫХ ЗНАЧЕНИЯХ!!!!!\
+-start && rst sending with BTND BTNR\
+-rst = 1, start = 1???????\
 
 ***need:***\
--rst = 1, start = 1???????
--start && rst sending with BTND BTNR\
 -test on nexys\
 -отчет\
