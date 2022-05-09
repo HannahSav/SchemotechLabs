@@ -34,13 +34,8 @@ module main(
     localparam WORK2 = 2'b10;
     localparam WORK3 = 2'b11;
    
-    //wire start;
     reg start_r;
-    //assign start = start_r;//rst_in
-    
-    //wire rst;
     reg rst_r;
-    //assign rst = rst_r;//rst_r
     
     wire rst_m;
     reg rst_m_r;
@@ -75,7 +70,7 @@ module main(
            send_b_adder <= 0;
            result_mult <= 0;
            result_cube <= 0;
-           state <= IDLE;//
+           state <= IDLE;
            rst_m_r <= 1;
         end else begin
             case (state)

@@ -47,7 +47,7 @@ module multipl(
     assign part_sum = a & {16{b[ctr]}};
     assign shifted_part_sum = part_sum << ctr;
     assign end_step = (ctr == 5'b10000); 
-    assign busy_o = state; ///BUSY ?? ???????? ????????????....
+    assign busy_o = state;
     
     always @(posedge clk_i)
         if (rst_i) begin

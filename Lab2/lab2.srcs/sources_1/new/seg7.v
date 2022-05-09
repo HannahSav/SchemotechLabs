@@ -21,8 +21,6 @@
 
 
 module seg7(
-
-///TODO: NEED TO ADD STATES FROM MAIN...
     input wire[15:0] SW,
     input CLK100MHZ,
     input BTND,
